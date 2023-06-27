@@ -7,6 +7,6 @@
          <title>Document</title>
 </head>
 <body>
-         <h1>Esta è a Pagina de contactos</h1>
+         <h1>Esta e a Pagina de contactos</h1>
 </body>
 </html>
