@@ -37,23 +37,41 @@ class SupportController extends Controller
         $data['status'] = 'a';
 
         $support =  $support->create($data);
-        dd($support);
+        // dd($support);
+        return redirect()->route('supports.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Support $support)
+    public function show(String|int $id)
     {
-        //
+        if (!$support = Support::find($id) ) {
+            // se for passado um id que nao existe na bd ele volta para a rota anterior
+            return back();
+        }
+        // $support = Support::find($id);
+        // dd($support);
+        return view('admin/supports/show', compact('support'));
+
+        // para alem do metodo find all nos temos outros metodos que podem filtrar os registros
+        // Assim: $support->where('id', '!=', $id)->first()  Ou
+        // Assim: $support->where('id', $id)->first()  Aqui por default temos igual de forma implicita
+
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Support $support)
+    public function edit(Support $support, String|int $id)
     {
-        //
+        if (!$support->where('id', $id)->first() ) {
+            // se for passado um id que nao existe na bd ele volta para a rota anterior
+            return back();
+        }
+
+        return view('admin/supports/edit', compact('support'));
+
     }
 
     /**
