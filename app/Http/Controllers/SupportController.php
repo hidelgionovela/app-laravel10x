@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUpdateSupport;
 use App\Models\Support;
 use Illuminate\Http\Request;
 
@@ -30,10 +31,12 @@ class SupportController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, Support $support)
+    public function store(StoreUpdateSupport $request, Support $support)
     {
-        //
-        $data = $request->all();
+        //para pegar todos dados do request
+        // $data = $request->all();
+        // para pegar apenas dados que ja foram validados
+        $data = $request->validated();
         $data['status'] = 'a';
 
         $support =  $support->create($data);
@@ -65,7 +68,7 @@ class SupportController extends Controller
      */
     public function edit(Support $support, String|int $id)
     {
-        if (!$support->where('id', $id)->first() ) {
+        if (!$support=$support->where('id', $id)->first() ) {
             // se for passado um id que nao existe na bd ele volta para a rota anterior
             return back();
         }
@@ -77,16 +80,43 @@ class SupportController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Support $support)
+    public function update(StoreUpdateSupport $request,Support $support, String|int $id)
     {
-        //
+        if (!$support = $support->find($id) ) {
+            // se for passado um id que nao existe na bd ele volta para a rota anterior
+            return back();
+        }
+
+        // Quando nao ha validacoes
+        // $support->update($request->only([
+        //     'subject', 'body'
+        // ]));
+
+
+        // Quando ha validacoes
+        $support->update($request->validated());
+
+        // outra forma de actualizar mais muito verbosa seria:
+            // $support->subject = $request->subject;
+            // $support->body = $request->body;
+            // $support->save();
+            // A forma acima funciona tanto para cadastro como para edicao.
+
+
+        return redirect()->route('supports.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Support $support)
+    public function destroy(String|int $id, Support $support)
     {
-        //
+        if (!$support = $support->find($id) ) {
+            // se for passado um id que nao existe na bd ele volta para a rota anterior
+            return back();
+        }
+        $support->delete();
+        return redirect()->route('supports.index');
+
     }
 }
