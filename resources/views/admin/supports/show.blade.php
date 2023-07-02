@@ -9,4 +9,9 @@
 </ul>
 
 <br>
+<form action="{{ route('supports.destroy', $support->id) }}" method="post">
+    @method('DELETE')
+    @csrf
+   <button type="submit">Deletar</button>
+</form>
 <a href="{{ route('supports.index') }}">Voltar</a>

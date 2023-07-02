@@ -8,6 +8,7 @@
                   <th>descricao</th>
                   <th>view</th>
                   <th>edit</th>
+                  <th>delete</th>
          </thead>
          <tbody>
                   @foreach ($supports as $support)
@@ -17,6 +18,7 @@
                            <td>{{$support->body}}</td>
                            <td> <a href="{{ route('supports.show', $support->id) }}">Ver</a> </td>
                            <td> <a href="{{ route('supports.edit', $support->id) }}">Editar</a> </td>
+                           <td> <a href="{{ route('supports.destroy', $support->id) }}">Deletar</a> </td>
                   </tr>
 
                   @endforeach
